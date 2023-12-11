@@ -1,0 +1,27 @@
+import numpy as np
+import pandas as pd
+
+df = pd.read_csv("./sales_data.csv")
+df.drop(["Column1"] , axis=1, inplace=True)
+
+# Part A - Compute mean of a series grouped by another series
+print (df.groupby(["Year" , "Month"])["Revenue"].mean())
+print ()
+
+# Part B - Fill an intermittent time series to replace all missing dates with values of previous non-missing date.
+formatted_date = pd.Series(pd.to_datetime(df["Date"]))
+formatted_date.ffill()
+print (formatted_date)
+print ()
+
+# Part C - Perform appropriate year-month string to dates conversion.
+print (pd.to_datetime(df["Date"]))
+
+
+# Part D - Split a dataset to group by two columns and then sort the aggregated results within the groups.
+print (df.groupby(["Country" , "Customer_Gender"]).agg({"Revenue" : "mean"}).sort_values("Revenue"))
+print ()
+
+# Part E - Split a given dataframe into groups with bin counts.
+df["Revenue_Bins"] = pd.cut(df["Revenue"] , bins=10)
+print (df.groupby("Revenue_Bins").size())
